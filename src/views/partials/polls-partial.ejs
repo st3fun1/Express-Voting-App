@@ -1,0 +1,22 @@
+<% polls.forEach(function(poll){%>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 polls">
+            <a href="/polls/poll?username=<%= poll.userId %>&pollTitle=<%= poll.title %>">
+                <div class="row">
+                    <div class="col-md-3"><img src="http://www.csuniv.edu/_resources/images/faculty-placeholder.png" alt="user"> </div>
+                    <div class="col-md-6">
+                        <p>
+                            <%= poll.userId %> :
+                                <%= decodeURIComponent(poll.title); %>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>Votes:
+                            <%= poll.options.map((x) => parseInt(x.votes,10)).reduce((a,b) => a + b, 0); %>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+<%});%>

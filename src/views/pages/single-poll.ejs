@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include('../partials/head.ejs', {title: 'Poll'}); %>
+</head>
+
+<body>
+   <%- include('../partials/nav.ejs',{}); %>
+    <header>
+      <%- include('../partials/header.ejs',{}); %>
+    </header>
+    <main>
+        <div class="container-fluid main-content">
+            <%- include('../partials/single-poll-partial.ejs',{}); %>
+        </div>
+    </main>
+    <footer>
+        <%- include('../partials/footer.ejs',{date: new Date().getFullYear()}); %>
+    </footer>
+    <script src="/scripts/jquery.js"></script>
+    <script src="/scripts/bootstrap.js"></script>
+    <script src="/scripts/votingapp.js"></script>
+</body>
+</html>

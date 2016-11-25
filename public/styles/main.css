@@ -1,0 +1,116 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    height:100%;
+}
+
+body {
+    font-size: 100%;
+    height:100%;
+}
+
+/* NAVIGATION */
+.navbar-custom {
+    margin-bottom: 0;
+}
+/*  HEADER */
+
+header {
+    background-color:cornflowerblue;
+    color:white;
+    padding: 50px 0;
+}
+
+.btn-custom {
+    margin-left:20px;
+}
+
+/* ABOUT */
+
+
+span + p{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+span.about-icons i {
+    font-size:50px;
+}
+
+
+/* LOGIN/REGISTER */
+
+.auth {
+    padding: 50px 0;
+}
+
+.form-btn {
+    text-transform: uppercase;
+    color: white;
+    display: block;
+    margin:10px auto;
+    width:100%;
+}
+
+/* PROFILE */
+
+#add-poll label {
+    width:15%;
+    margin-right:3%;
+    text-align: center;
+}
+#add-poll input{
+    display: inline-block;
+    width: 80%;
+}
+
+/* MAIN CONTENT */
+.main-content{
+    padding: 50px;
+    min-height:50%;
+    border: 2px solid darkblue;
+    border-width: 2px 0;
+}
+
+/* VOTING PAGE */
+#vote  .radio{
+    
+   border:1px grey solid;
+   border-radius:2px;
+   padding:5px;
+   margin-bottom:10px;
+}
+
+/* POLLS */
+.polls {
+    min-height:60px;
+}
+.polls img{
+    width:50px;
+    height:50px;
+}
+
+.polls p {
+    padding: 3px;
+}
+
+.polls .row {
+    border-radius:5px;
+    border:1px grey solid;
+    margin-bottom:10px;
+    padding:5px;
+}
+
+/* FOOTER */
+
+footer {
+    background: cornflowerblue;
+    color:white;
+    padding:25px 0;
+    font-size:14px;
+}
+
