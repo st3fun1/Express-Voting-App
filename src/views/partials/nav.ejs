@@ -10,10 +10,25 @@
                 <li class="active"><a href="/">Home</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <%  
+                    var layout;
+                    if(isLoggedIn == undefined){
+                        layout = nav.loggedOut.links;
+                    } else {
+                        layout = nav.loggedIn.links
+                    }
+                %>
+                <% layout.forEach(function(link){%>
+                    <li>
+                        <a href="<%= link.href %>"><%= link.name %></a>
+                    </li>
+                <% }); %>
+<!--
                 <li> <a href="/auth/login">Login</a> </li>
                 <li> <a href="/auth/logout">Logout</a> </li>
                 <li><a href="/auth/register">Register</a></li>
                 <li> <a href="/polls">Polls</a> </li>
+-->
             </ul>
         </div>
         <!-- /.navbar-collapse -->

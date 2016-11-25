@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <%- include('../partials/head.ejs', {title: 'Voting!!!!'}); %>
+   <%- include('../partials/head.ejs', {title: title}); %>
 </head>
 
 <body>
-   <%- include('../partials/nav.ejs',{}); %>
+   <%- include('../partials/nav.ejs',{nav: nav}); %>
     <header>
-      <%- include('../partials/header.ejs',{}); %>
+      <%- include('../partials/header.ejs',{h2: h2}); %>
     </header>
     <main>
         <div class="container-fluid main-content">
-            <%- include('../partials/main.ejs',{}); %>
+            <%- include(partial,{}); %>
         </div>
     </main>
     <footer>

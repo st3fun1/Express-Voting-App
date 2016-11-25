@@ -3,14 +3,21 @@ var app = express();
 var mongodb = require('mongodb').MongoClient;
 var PollRouter = express.Router();
 var ObjectId = require('mongodb').ObjectID;
-var route = function (dbAddress) {
+var route = function (dbAddress,config) {
     PollRouter.route('/').get(function (req, res) {
         var polls;
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');
             pollsCollection.find({}).toArray(function (err, results) {
-                console.log(results);
-                res.render('polls', {polls: results});
+                /*console.log(results);*/
+                res.render('index',{
+                    partial: config.partials.polls, 
+                    title: config.pageSettings.polls.title,
+                    h2: config.pageSettings.polls.h2,
+                    nav: config.pageSettings.nav,
+                    isLoggedIn: req.session.userLogged,
+                    polls: results
+                });
             });
         });
     });
@@ -27,11 +34,15 @@ var route = function (dbAddress) {
                     //pass data into single-poll partial
                     //                   req.session.status = {
                     //                       statusCode: 200
-                    //                   };
-                    
-                    res.render('single-poll', {
+                    //                };
+                    res.render('index',{
+                        partial: config.partials.singlePoll, 
+                        title: config.pageSettings.singlePoll.title,
+                        h2: config.pageSettings.singlePoll.h2,
+                        nav: config.pageSettings.nav,
+                        isLoggedIn: req.session.userLogged,
                         options: result.options
-                        ,title: decodeURIComponent(result.title)
+                        ,pollTitle: decodeURIComponent(result.title)
                         ,username: pollOwner
                     });
                 }
@@ -63,7 +74,7 @@ var route = function (dbAddress) {
             },
             { new: true},
             function (err,result) {
-                console.log(result);
+           /*     console.log(result);*/
                 if (result) {
                     //pass data into single-poll partial
                  /*   res.redirect('/polls');*/

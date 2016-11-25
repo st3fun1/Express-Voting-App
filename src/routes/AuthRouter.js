@@ -5,12 +5,16 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var AuthRouter = express.Router();
 var ObjectId = require('mongodb').ObjectID;
-
-var route = function (dbAddress) {
+var route = function (dbAddress,config) {
     
     AuthRouter.route('/register').get(function (req, res) {
         if (req.user) res.redirect('/');
-        res.render('register', {});
+        res.render('index', {
+            partial: config.partials.register, 
+            title: config.pageSettings.register.title,
+            h2: config.pageSettings.register.h2,
+            nav: config.pageSettings.nav
+        });
     });
     
     AuthRouter.route('/register/new').post(function (req, res) {
@@ -37,7 +41,14 @@ var route = function (dbAddress) {
     
     AuthRouter.route('/login').get(function (req, res) {
         if (req.user) res.redirect('/');
-        res.render('login', {});
+        console.log(req.session.userLogged)
+        res.render('index', {
+            partial: config.partials.login, 
+            title: config.pageSettings.login.title,
+            h2: config.pageSettings.login.h2,
+            nav: config.pageSettings.nav,
+            isLoggedIn: req.session.userLogged
+        });
     });
     
     AuthRouter.route('/login/now').post(passport.authenticate('local'), function (req, res) {
@@ -50,7 +61,17 @@ var route = function (dbAddress) {
             res.redirect('/');
         }
         else {
-            res.render('profile');
+            console.log(req.session.userLogged)
+            req.session.userLogged = 1;
+            console.log(req.session.userLogged)
+            console.log(req.session);
+            res.render('index', {
+                partial: config.partials.profile, 
+                title: config.pageSettings.profile.title,
+                h2: config.pageSettings.profile.h2,
+                nav: config.pageSettings.nav,
+                isLoggedIn: req.session.userLogged
+            });
         }
     });
     
@@ -97,7 +118,13 @@ var route = function (dbAddress) {
             res.redirect('/');
         }
         else {
-            res.render('settings');
+            res.render('index',{
+                partial: config.partials.settings, 
+                title: config.pageSettings.settings.title,
+                h2: config.pageSettings.settings.h2,
+                nav: config.pageSettings.nav,
+                isLoggedIn: req.session.userLogged
+            });
         }
     });
     
