@@ -29,6 +29,7 @@ var route = function (dbAddress) {
                     //                   req.session.status = {
                     //                       statusCode: 200
                     //                   };
+                    
                     res.render('single-poll', {
                         options: result.options
                         ,title: decodeURIComponent(result.title),
@@ -43,7 +44,6 @@ var route = function (dbAddress) {
     });
     /* Increment votes for a single poll */
     PollRouter.route('/vote/:username/:pollTitle').post(function (req, res) {
-        console.log(req.body);
         var pollOwner = req.params.username;
         var pollTitle = encodeURIComponent(req.params.pollTitle);
         var pollOption = req.body.option;
@@ -76,6 +76,31 @@ var route = function (dbAddress) {
                 }
                 else {
                         res.json({'message':'Failed to update data!'});
+                }
+            });
+        });
+    });
+      PollRouter.route('/getPoll?').get(function (req, res) {
+        console.log(req.query);
+        var pollOwner = req.query.username;
+        var pollTitle = req.query.pollTitle
+//        console.log(pollOwner, pollTitle, pollOption);
+        mongodb.connect(dbAddress, function (err, db) {
+            var pollsCollection = db.collection('polls');
+            pollsCollection.findOne(
+            {
+                title: pollTitle
+                ,userId: pollOwner,
+            },
+            function (err,result) {
+                if(result){
+                    var responseObj = {
+                            message: 'Update completed succesfully!',
+                            poll: result
+                    };
+                    res.json(responseObj);
+                }else{
+                    res.json({'message':'Failed to update data!'});
                 }
             });
         });
