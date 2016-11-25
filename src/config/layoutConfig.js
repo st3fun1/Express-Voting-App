@@ -5,8 +5,8 @@ var config = {
        polls: '../partials/polls-partial.ejs',
        login: '../partials/login-partial.ejs',
        profile: '../partials/profile-partial.ejs',
-       settings: '../partials/settings-partial.ejs',
-       singlePoll: '../partials/single-poll-partial.ejs'
+       changePassword: '../partials/changePassword.ejs',
+       singlePoll: '../partials/single-poll-partial.ejs',
    },
    pageSettings: { 
        main: {

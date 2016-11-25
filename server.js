@@ -12,6 +12,7 @@ var config = require('./src/config/layoutConfig');
 
 var AuthRouter = require('./src/routes/AuthRouter')(dbAddress,config);
 var PollRouter = require('./src/routes/PollRouter')(dbAddress,config);
+var SettingsRouter = require('./src/routes/SettingsRouter')(dbAddress,config);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -40,6 +41,7 @@ app.get('/',function(req,res){
 
 app.use('/auth',AuthRouter);
 app.use('/polls',PollRouter);
+app.use('/settings',SettingsRouter);
 app.listen(serverPort,function(){
    console.log(`Server started on port ${serverPort}!`); 
 });

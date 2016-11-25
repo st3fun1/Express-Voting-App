@@ -13,7 +13,8 @@ var route = function (dbAddress,config) {
             partial: config.partials.register, 
             title: config.pageSettings.register.title,
             h2: config.pageSettings.register.h2,
-            nav: config.pageSettings.nav
+            nav: config.pageSettings.nav,
+            isLoggedIn: req.session.userLogged
         });
     });
     
