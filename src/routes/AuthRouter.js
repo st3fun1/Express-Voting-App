@@ -21,10 +21,16 @@ var route = function (dbAddress) {
                 , password: req.body.password
             };
             var collection = db.collection('users');
-            collection.insertOne(user, function (err, results) {
-                req.login(results.ops[0], function () {
-                    res.redirect('/auth/profile');
-                });
+            collection.findOne({username: user.username},function (err,result) {
+                if(result){
+                    res.redirect('back');       
+                }else{
+                    collection.insertOne(user, function (err, results) {
+                        req.login(results.ops[0], function () {
+                            res.redirect('/auth/profile');
+                        });
+                    });
+                }
             });
         });
     });
@@ -35,6 +41,7 @@ var route = function (dbAddress) {
     });
     
     AuthRouter.route('/login/now').post(passport.authenticate('local'), function (req, res) {
+        console.log(req.user);
         res.redirect('/auth/profile');
     });
     
@@ -47,7 +54,13 @@ var route = function (dbAddress) {
         }
     });
     
-    AuthRouter.route('/profile/add-poll').post(function (req, res) {
+    AuthRouter.route('/logout').get(function (req,res){
+        req.session.destroy(function (err) {
+            res.redirect('/');
+         });
+    }); 
+    
+    AuthRouter.route('/profile/addPoll').post(function (req, res) {
         mongodb.connect(dbAddress, function (err, db) {
             var options = [];
             for(var item in req.body){
@@ -58,19 +71,23 @@ var route = function (dbAddress) {
             var collection = db.collection('polls');
             //add each option to options array starting from req.body.option1
                collection.insertOne({
-                    userId: req.user._id
+                      user: {
+                          id: req.user._id,
+                          username: req.user.username
+                      }
                     , title: encodeURIComponent(req.body.title)
                     , options: options
                 }
                 , function (err, result) {
                 if(result.ops !== undefined ){
-                    res.redirect(`/polls/poll?username=${req.user._id}&pollTitle=${req.body.title}`);
+                    res.redirect(`/polls/poll?username=${req.user.username}&pollTitle=${req.body.title}`);
                 }else{
                     res.redirect('back');
                 }
                 
             });
-        });
+    });
+        
     }).all(function(req,res){
         if(req.user == undefined) res.redirect('/');
     });

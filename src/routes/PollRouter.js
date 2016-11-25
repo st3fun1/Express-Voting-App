@@ -9,9 +9,8 @@ var route = function (dbAddress) {
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');
             pollsCollection.find({}).toArray(function (err, results) {
-                res.render('polls', {
-                    polls: results
-                });
+                console.log(results);
+                res.render('polls', {polls: results});
             });
         });
     });
@@ -21,8 +20,8 @@ var route = function (dbAddress) {
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');
             pollsCollection.findOne({
-                title: pollTitle
-                , userId: pollOwner
+                  title: pollTitle
+                , 'user.username': pollOwner
             }, function (err, result) {
                 if (result) {
                     //pass data into single-poll partial
@@ -32,8 +31,8 @@ var route = function (dbAddress) {
                     
                     res.render('single-poll', {
                         options: result.options
-                        ,title: decodeURIComponent(result.title),
-                        ID: pollOwner
+                        ,title: decodeURIComponent(result.title)
+                        ,username: pollOwner
                     });
                 }
                 else {
@@ -53,7 +52,7 @@ var route = function (dbAddress) {
             pollsCollection.findAndModify(
             {
                 title: pollTitle
-                ,userId: pollOwner,
+                ,'user.username': pollOwner,
                 'options.name': pollOption 
             },
              [['id','asc']],
@@ -80,8 +79,8 @@ var route = function (dbAddress) {
             });
         });
     });
-      PollRouter.route('/getPoll?').get(function (req, res) {
-        console.log(req.query);
+    PollRouter.route('/getPoll?').get(function (req, res) {
+//        console.log(req.query);
         var pollOwner = req.query.username;
         var pollTitle = req.query.pollTitle
 //        console.log(pollOwner, pollTitle, pollOption);
@@ -90,7 +89,7 @@ var route = function (dbAddress) {
             pollsCollection.findOne(
             {
                 title: pollTitle
-                ,userId: pollOwner,
+                ,'user.username': pollOwner,
             },
             function (err,result) {
                 if(result){

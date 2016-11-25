@@ -29,8 +29,8 @@ $(function () {
             // Set chart options
             var options = {
                 'title': title
-                , 'width': 400
-                , 'height': 400
+                , 'width': '100%'
+                , 'height': '100%'
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
