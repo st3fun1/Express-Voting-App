@@ -41,30 +41,41 @@ var route = function (dbAddress) {
             });
         });
     });
+    /* Increment votes for a single poll */
     PollRouter.route('/vote/:username/:pollTitle').post(function (req, res) {
-        console.log(req.params.pollTitle);
+        console.log(req.body);
         var pollOwner = req.params.username;
         var pollTitle = encodeURIComponent(req.params.pollTitle);
         var pollOption = req.body.option;
-        console.log(pollOwner, pollTitle, pollOption);
+//        console.log(pollOwner, pollTitle, pollOption);
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');
-            pollsCollection.update({
+            pollsCollection.findAndModify(
+            {
                 title: pollTitle
                 ,userId: pollOwner,
                 'options.name': pollOption 
             },
+             [['id','asc']],
             {
                 $inc: {
                     'options.$.votes': 1
                 }
-            }, function (err, result) {
+            },
+            { new: true},
+            function (err,result) {
+                console.log(result);
                 if (result) {
                     //pass data into single-poll partial
-                    res.redirect('/polls');
+                 /*   res.redirect('/polls');*/
+                        var responseObj = {
+                            message: 'Update completed succesfully!',
+                            poll: result.value
+                        };
+                            res.json(responseObj);
                 }
                 else {
-                    res.redirect('back');
+                        res.json({'message':'Failed to update data!'});
                 }
             });
         });

@@ -17,8 +17,6 @@
     <footer>
         <%- include('../partials/footer.ejs',{date: new Date().getFullYear()}); %>
     </footer>
-    <script src="/scripts/jquery.js"></script>
-    <script src="/scripts/bootstrap.js"></script>
-    <script src="/scripts/votingapp.js"></script>
+    <%- include('../partials/scripts.ejs', {}); %>
 </body>
 </html>

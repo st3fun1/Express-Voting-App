@@ -1,3 +1,4 @@
+<!-- TO DO refactor pages into 1; include main partial based on route; + objects for other partials-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,6 @@
     <footer>
         <%- include('../partials/footer.ejs',{date: new Date().getFullYear()}); %>
     </footer>
-    <script src="/scripts/jquery.js"></script>
-    <script src="/scripts/bootstrap.js"></script>
-    <script src="/scripts/votingapp.js"></script>
+        <%- include('../partials/scripts.ejs', {}); %>
 </body>
 </html>
