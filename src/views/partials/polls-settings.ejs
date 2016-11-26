@@ -1,0 +1,21 @@
+<!-- views/partials/polls-settings.ejs -->
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <h1 class="text-center">Your polls</h1>
+ <!--  <ul class="list-group">
+    <li class="list-group-item">
+        <button class="badge btn btn-default">Edit</button>
+        <button class="badge btn btn-default">Delete</button> Cras justo odio </li>
+</ul>-->
+        <ul class="poll-list">
+            <% polls.forEach(function(poll){ %>
+                <li class="poll-list-item">
+                    <a href="polls/poll/<%= poll._id %>">
+                        <span class="text"><%= decodeURIComponent(poll.title) %>
+                        </span>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</div>

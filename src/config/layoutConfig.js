@@ -8,7 +8,8 @@ var config = {
        changePassword: '../partials/changePassword.ejs',
        singlePoll: '../partials/single-poll-partial.ejs',
        accountSettings: '../partials/account-settings.ejs',
-       pollsSettings:'../partials/polls-settings.ejs'
+       pollsSettings:'../partials/polls-settings.ejs',
+       editPoll: '../partials/edit-poll.ejs'
    },
    pageSettings: { 
        main: {
@@ -70,8 +71,12 @@ var config = {
                    name: 'Profile'
                },
                {
-                   href: '/settings',
+                   href: '/settings/polls',
                    name: 'Settings'
+               },
+               {
+                   href: '/settings/account',
+                   name: 'Account'
                },
                {
                    href: '/auth/logout',

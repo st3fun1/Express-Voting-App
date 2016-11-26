@@ -1,0 +1,27 @@
+<div class="row text-center">
+    <div class="col-md-4">
+        <h1><%= pollTitle %></h1>
+        <h2>By <%=  pollOwner.toUpperCase(); %></h2> </div>
+    <div class="col-md-4">
+        <form id="vote" action="/polls/vote/<%= pollOwner %>/<%= encodeURIComponent(pollTitle) %>" method="post" class="text-left">
+            <% options.forEach(function(option,index){ %>
+                <% var checked = 'checked'; %>
+                <%  if(index > 0) {
+                        checked = '';
+                     }
+                %>
+                <div class="radio">
+                    <label>
+                        <input <%= checked %> type="radio" name="option" id="<%= `option${index + 1}` %>" value="<%= option.name %>">
+                        <%= option.name %>
+                    </label>
+                </div>
+                <% }); %>
+                <button type="submit" class="btn btn-default btn-success form-btn col-xs-12">Vote</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <p>Pie chart</p>
+        <div id="chart_div"></div>
+    </div>
+</div>

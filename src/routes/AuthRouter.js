@@ -69,10 +69,7 @@ var route = function (dbAddress,config) {
             res.redirect('/');
         }
         else {
-            console.log(req.session.userLogged)
             req.session.userLogged = 1;
-            console.log(req.session.userLogged)
-            console.log(req.session);
             res.render('index', {
                 partial: config.partials.profile, 
                 title: config.pageSettings.profile.title,

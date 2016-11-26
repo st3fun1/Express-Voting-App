@@ -2,21 +2,22 @@ var express = require('express');
 var app = express();
 var mongodb = require('mongodb').MongoClient;
 var SettingsRouter = express.Router();
+var ObjectID = require('mongodb').ObjectID;
 var route = function (dbAddress,config) {
     var redirectMiddleware = function(req,res,next){
-       if(!req.user){
-           res.redirect('/');
-       }
-         next();
+        if(!req.user){
+           return res.redirect('/');
+        }
+        next();
     };
     SettingsRouter.use(redirectMiddleware);
-//    function renderRoute(routerObj,url,renderObj){
-//        
-//        return outerObj.route(url).get(function(req,res){
-//            res.render('index',renderObj);
-//        });
-//        
-//    }
+    function renderRoute(routerObj,url,renderObj){
+        
+        return outerObj.route(url).get(function(req,res){
+            res.render('index',renderObj);
+        });
+        
+    }
     SettingsRouter.route('/account').get(function (req, res) {
         res.render('index',{
             partial: config.partials.accountSettings, 
@@ -29,7 +30,6 @@ var route = function (dbAddress,config) {
     });
     
     SettingsRouter.route('/account/edit/:username').post(function (req,res) {
-        console.log(req.params.username);
         if(req.body.newPass !== req.body.newPassAgain){
                 res.redirect('back');
         }else{
@@ -49,12 +49,44 @@ var route = function (dbAddress,config) {
     }); 
     
     SettingsRouter.route('/polls').get(function (req, res) {
-        res.render('index',{
-            partial: config.partials.pollsSettings, 
-            title: config.pageSettings.pollsSettings.title,
-            h2: config.pageSettings.pollsSettings.h2,
-            nav: config.pageSettings.nav,
-            isLoggedIn: req.session.userLogged
+        mongodb.connect(dbAddress,function(err,db){
+           if(err) throw err;
+           var collection = db.collection('polls');
+           collection.find({'user.id' : req.user._id}).toArray(function(err,docs){
+              if(err) throw err;
+               res.render('index',{
+                    partial: config.partials.pollsSettings, 
+                    title: config.pageSettings.pollsSettings.title,
+                    h2: config.pageSettings.pollsSettings.h2,
+                    nav: config.pageSettings.nav,
+                    isLoggedIn: req.session.userLogged,
+                    polls: docs
+              });
+           });
+        });
+    });
+    
+     SettingsRouter.route('/polls/poll/:id').get(function (req, res) {
+        console.log(req.params.title);
+        mongodb.connect(dbAddress,function(err,db){
+           if(err) throw err;
+           var collection = db.collection('polls');
+           collection.findOne({_id:  new ObjectID(req.params.id)},function(err,poll){
+              console.log(poll);
+              if(err) throw err;
+              if(res){
+                res.render('index',{
+                    partial: config.partials.editPoll, 
+                    title: config.pageSettings.pollsSettings.title,
+                    h2: config.pageSettings.pollsSettings.h2,
+                    nav: config.pageSettings.nav,
+                    isLoggedIn: req.session.userLogged,
+                    scripts: config.pageSettings.singlePoll.scripts
+                });
+               
+              }
+           
+           });
         });
     });
     
@@ -66,15 +98,9 @@ var route = function (dbAddress,config) {
         
     });
     
-    SettingsRouter.route('/editPolls/').post(function (req,res) {
+    SettingsRouter.route('/addOption/').post(function (req,res) {
         
-    });
-    
-    SettingsRouter.route('/changePassword/').post(function (req,res) {
-        
-    });
-    
-    console.log(SettingsRouter);
+    });  
     return SettingsRouter;
 }
 module.exports = route;
