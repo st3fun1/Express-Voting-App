@@ -7,11 +7,13 @@ var config = {
        profile: '../partials/profile-partial.ejs',
        changePassword: '../partials/changePassword.ejs',
        singlePoll: '../partials/single-poll-partial.ejs',
+       accountSettings: '../partials/account-settings.ejs',
+       pollsSettings:'../partials/polls-settings.ejs'
    },
    pageSettings: { 
        main: {
-           title: 'Welcome to my homepage!',
-           h2: 'Custom polls with live results'
+           title: 'Votist',
+           h2: 'Custom polls with live results',
        },
        register: {
            title: 'Register',
@@ -26,16 +28,22 @@ var config = {
            h2: 'Login to create poll'
        },
        profile: {
-           title: 'Hi, User!',
+           title: 'Profile',
            h2: 'Start Creating Polls and Share Them'
        },
-       settings: {
-           title: 'Hi, User!',
+       accountSettings: {
+           title: 'Manage account',
            h2: 'Change your password or your account name'
+       },
+       pollsSettings: {
+           title: 'Manage polls',
+           h2: 'Delete or edit polls'
        },
        singlePoll:{
            title: 'Vote now',
-           h2: 'Vote now and pick how you want to see the data'
+           h2: 'Vote now and pick how you want to see the data',
+           scripts:[{path:'https://www.gstatic.com/charts/loader.js'},
+                             {path: '/scripts/charts.js'}]
        },
        nav: {
            loggedOut:{links:[
@@ -62,7 +70,7 @@ var config = {
                    name: 'Profile'
                },
                {
-                   href: '/auth/profile/settings',
+                   href: '/settings',
                    name: 'Settings'
                },
                {

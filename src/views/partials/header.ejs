@@ -5,7 +5,11 @@
             <h1>
                 Votist
             </h1>
-            <h2><%= h2 %></h2>
+            <% if(typeof username != 'undefined'){%>
+                <h2>Welcome <%= username %>!</h2>
+            <% } else { %>
+                <h2><%= h2 %></h2>
+            <% } %>
             <a href="/register">
                 <button class="btn btn-default btn-success btn-lg btn-custom"> Register </button>
             </a>

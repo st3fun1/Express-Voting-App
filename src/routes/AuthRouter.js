@@ -19,16 +19,21 @@ var route = function (dbAddress,config) {
     });
     
     AuthRouter.route('/register/new').post(function (req, res) {
-        mongodb.connect(dbAddress, function (err, db) {
+        if(req.body.password !== req.body.passwordAgain){
+                res.redirect('back');
+        }else{
+            mongodb.connect(dbAddress, function (err, db) {
             if (err) throw err;
             var user = {
-                username: req.body.username
-                , password: req.body.password
+                 username: req.body.username
+                ,password: req.body.password
+                ,name: req.body.name
+                ,email: req.body.email
             };
             var collection = db.collection('users');
-            collection.findOne({username: user.username},function (err,result) {
+            collection.findOne({$or: [{username: user.username},{email: user.email}]},function (err,result) {
                 if(result){
-                    res.redirect('back');       
+                    res.redirect('back');
                 }else{
                     collection.insertOne(user, function (err, results) {
                         req.login(results.ops[0], function () {
@@ -38,6 +43,8 @@ var route = function (dbAddress,config) {
                 }
             });
         });
+        }
+        
     });
     
     AuthRouter.route('/login').get(function (req, res) {
@@ -71,7 +78,8 @@ var route = function (dbAddress,config) {
                 title: config.pageSettings.profile.title,
                 h2: config.pageSettings.profile.h2,
                 nav: config.pageSettings.nav,
-                isLoggedIn: req.session.userLogged
+                isLoggedIn: req.session.userLogged,
+                username: req.user.username
             });
         }
     });
@@ -114,7 +122,7 @@ var route = function (dbAddress,config) {
         if(req.user == undefined) res.redirect('/');
     });
     
-    AuthRouter.route('/profile/settings').get(function (req, res) {
+/*    AuthRouter.route('/profile/settings').get(function (req, res) {
         if (!req.user) {
             res.redirect('/');
         }
@@ -127,7 +135,7 @@ var route = function (dbAddress,config) {
                 isLoggedIn: req.session.userLogged
             });
         }
-    });
+    });*/
     
     AuthRouter.route('/profile/settings/change-password').post(function (req, res) {
         mongodb.connect(dbAddress, function (err, db) {

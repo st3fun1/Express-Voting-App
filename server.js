@@ -9,11 +9,11 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var session = require('express-session');
 var config = require('./src/config/layoutConfig');
-
+/*app.locals.scripts = '/scripts/charts.js';*/
 var AuthRouter = require('./src/routes/AuthRouter')(dbAddress,config);
 var PollRouter = require('./src/routes/PollRouter')(dbAddress,config);
 var SettingsRouter = require('./src/routes/SettingsRouter')(dbAddress,config);
-
+/* to do redirect middleware when not logged in for settings, profile etc */
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(session({

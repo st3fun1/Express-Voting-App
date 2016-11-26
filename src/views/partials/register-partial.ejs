@@ -3,11 +3,25 @@
     <div class="col-md-4 col-md-offset-4">
         <form class="auth-form" name="auth-form" method="post" action="register/new">
             <div class="form-group">
-                <label for="exampleInputEmail1">Username</label>
-                <input type="text"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" class="form-control" id="exampleInputEmail1" placeholder="Username" name="username"> </div>
+                <label for="exampleInputUsername">Username</label>
+                <input type="text"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$" class="form-control" id="exampleInputUsername" placeholder="Username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputName">Name</label>
+                <input type="text"  pattern="[A-Za-z]+" class="form-control" id="exampleInputName" placeholder="" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email"  class="form-control" id="exampleInputEmail1" placeholder="" name="email" required>
+            </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password"> </div>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword2">Password again</label>
+                <input type="password" class="form-control" id="exampleInputPassword2" name="passwordAgain" placeholder="" required>
+            </div>
 <!--
             <div class="form-group">
                 <label for="exampleInputFile">Avatar</label>

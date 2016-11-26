@@ -1,0 +1,16 @@
+<div class="row text-center">
+    <div class="col-md-4 col-md-offset-4">
+        <h1>Change password</h1>
+        <form class="auth-form" name="auth-form" method="post" action="account/edit/<%= username %>">
+             <div class="form-group">
+                <label for="newpassword">New password </label>
+                <input type="password" class="form-control" id="newpassword" name="newPass" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="newpasswordagain">New password again</label>
+                <input type="password" class="form-control" id="newpasswordagain" name="newPassAgain" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-default btn-primary form-btn col-xs-12">Submit</button>
+        </form>
+    </div>
+</div>

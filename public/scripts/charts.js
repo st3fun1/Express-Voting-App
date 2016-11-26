@@ -15,22 +15,23 @@ $(function () {
     google.charts.load('current', {
         'packages': ['corechart']
     });
-    function addDataToChart(dataArr, title) {
+    function addDataToChart(dataArr) {
         var data = dataArr;
-        var titleOfPie = title;
         return function drawChart() {
             // Create the data table.
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Topping');
             data.addColumn('number', 'Slices');
-            console.log('dataArr', dataArr);
-            console.log('title', title);
             data.addRows(dataArr);
             // Set chart options
             var options = {
-                'title': title
-                , 'width': '100%'
+                  'width': '100%'
                 , 'height': '100%'
+                , is3D: true
+                , legend: {
+                    alignment: 'center',
+                    position: 'right'
+                }
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));

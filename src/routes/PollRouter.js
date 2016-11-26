@@ -43,7 +43,8 @@ var route = function (dbAddress,config) {
                         isLoggedIn: req.session.userLogged,
                         options: result.options
                         ,pollTitle: decodeURIComponent(result.title)
-                        ,username: pollOwner
+                        ,pollOwner: pollOwner
+                        ,scripts: config.pageSettings.singlePoll.scripts
                     });
                 }
                 else {
@@ -64,7 +65,7 @@ var route = function (dbAddress,config) {
             {
                 title: pollTitle
                 ,'user.username': pollOwner,
-                'options.name': pollOption 
+                'options.name': pollOption,
             },
              [['id','asc']],
             {
