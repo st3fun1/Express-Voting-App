@@ -49,7 +49,6 @@ var route = function (dbAddress,config) {
     
     AuthRouter.route('/login').get(function (req, res) {
         if (req.user) res.redirect('/');
-        console.log(req.session.userLogged)
         res.render('index', {
             partial: config.partials.login, 
             title: config.pageSettings.login.title,
@@ -59,10 +58,11 @@ var route = function (dbAddress,config) {
         });
     });
     
-    AuthRouter.route('/login/now').post(passport.authenticate('local'), function (req, res) {
-        console.log(req.user);
-        res.redirect('/auth/profile');
-    });
+    AuthRouter.route('/login/now').post(passport.authenticate('local',{
+        successRedirect: '/auth/profile',
+        failureRedirect: 'back',
+        failureFlash: true
+    }));
     
     AuthRouter.route('/profile').get(function (req, res) {
         if (!req.user) {
