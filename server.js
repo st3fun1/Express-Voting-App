@@ -30,20 +30,31 @@ app.set('view engine', 'ejs')
 app.use(function(req,res,next){
     res.locals.buttons = config.pageSettings.buttons;
     res.locals.nav = config.pageSettings.nav;
-    res.locals.isLoggedIn = req.session.userLogged;
     next();
 });
 
+var checkIfLogged = function (req, res, next){
+    if(req.user){
+        req.session.userLogged = 1;
+        res.locals.isLoggedIn = req.session.userLogged;
+    } else{
+        res.locals.isLoggedIn = undefined;
+        req.session.userLogged = undefined;
+    }
+    next();
+};
+
+app.use(checkIfLogged);
 app.get('/',function(req,res){
     console.log(req.session.userLogged)
     res.render('index',{
+        viewData: {
         partial: config.partials.mainPage, 
         title: config.pageSettings.main.title,
         h2: config.pageSettings.main.h2,
-        nav: config.pageSettings.nav,
-        isLoggedIn: req.session.userLogged
+        }
     });
-});
+    });
 
 app.use('/auth',AuthRouter);
 app.use('/polls',PollRouter);

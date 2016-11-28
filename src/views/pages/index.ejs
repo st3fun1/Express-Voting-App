@@ -3,18 +3,18 @@
 <html lang="en">
 
 <head>
-    <%- include('../partials/head.ejs', {title: title}); %>
+    <%- include('../partials/head.ejs', {title: viewData.title}); %>
 </head>
 
 <body>
     <div class="main-wrapper">
-        <%- include('../partials/nav.ejs',{nav: nav}); %>
+        <%- include('../partials/nav.ejs'); %>
             <header>
-                <%- include('../partials/header.ejs',{h2: h2}); %>
+                <%- include('../partials/header.ejs',{h2: viewData.h2}); %>
             </header>
             <main>
                 <div class="container-fluid main-content">
-                    <%- include(partial,{}); %>
+                    <%- include(viewData.partial,{}); %>
                 </div>
             </main>
             <footer>

@@ -3,8 +3,8 @@
 <script src="/scripts/helpers.js"></script>
 <script src="/scripts/votingapp.js"></script>
 <!--<script src="/scripts/charts.js"></script>-->
-<% if(typeof scripts !== 'undefined'){ %>
-    <% scripts.forEach(function(script){ %>
+<% if(typeof viewData.scripts !== 'undefined'){ %>
+    <% viewData.scripts.forEach(function(script){ %>
 <script src="<%= script.path %>"></script>
     <% }) %>
 <% } %>

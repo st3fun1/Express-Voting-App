@@ -4,17 +4,37 @@ var mongodb = require('mongodb').MongoClient;
 var PollRouter = express.Router();
 var ObjectId = require('mongodb').ObjectID;
 var route = function (dbAddress,config) {
+    
+    var renderContentMiddleware = function(req,res,next){
+        var viewObj;
+        console.log('REQ: ',  req.path);
+        if(req.path == '/'){
+            res.locals.viewData = {
+                    partial: config.partials.polls, 
+                    title: config.pageSettings.polls.title,
+                    h2: config.pageSettings.polls.h2,
+                };
+        } else if(req.path = '/poll?'){
+            res.locals.viewData = {
+                partial: config.partials.singlePoll, 
+                title: config.pageSettings.singlePoll.title,
+                h2: config.pageSettings.singlePoll.h2,
+                scripts: config.pageSettings.singlePoll.scripts
+            }
+        }
+        next();
+    };
+    PollRouter.use(renderContentMiddleware);
+    
     PollRouter.route('/').get(function (req, res) {
+        console.log(req.app.get('viewObj'));
         var polls;
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');
             pollsCollection.find({}).toArray(function (err, results) {
                 /*console.log(results);*/
                 res.render('index',{
-                    partial: config.partials.polls, 
-                    title: config.pageSettings.polls.title,
-                    h2: config.pageSettings.polls.h2,
-                    polls: results
+                    results: results
                 });
             });
         });
@@ -34,13 +54,9 @@ var route = function (dbAddress,config) {
                     //                       statusCode: 200
                     //                };
                     res.render('index',{
-                        partial: config.partials.singlePoll, 
-                        title: config.pageSettings.singlePoll.title,
-                        h2: config.pageSettings.singlePoll.h2,
                         options: result.options
                         ,pollTitle: decodeURIComponent(result.title)
                         ,pollOwner: pollOwner
-                        ,scripts: config.pageSettings.singlePoll.scripts
                     });
                 }
                 else {
