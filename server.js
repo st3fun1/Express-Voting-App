@@ -27,6 +27,12 @@ require('./src/config/passport')(app);
 app.use(express.static(path.join(__dirname,'public')));
 app.set('views',path.join(__dirname,'src/views/pages'));
 app.set('view engine', 'ejs')
+app.use(function(req,res,next){
+    res.locals.buttons = config.pageSettings.buttons;
+    res.locals.nav = config.pageSettings.nav;
+    res.locals.isLoggedIn = req.session.userLogged;
+    next();
+});
 
 app.get('/',function(req,res){
     console.log(req.session.userLogged)
@@ -42,6 +48,9 @@ app.get('/',function(req,res){
 app.use('/auth',AuthRouter);
 app.use('/polls',PollRouter);
 app.use('/settings',SettingsRouter);
+app.all('*',function(req,res){
+   res.redirect('/'); 
+});
 app.listen(serverPort,function(){
    console.log(`Server started on port ${serverPort}!`); 
 });

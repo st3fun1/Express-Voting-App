@@ -105,7 +105,30 @@ var config = {
                    name: 'Logout'
                }]
            }
+       },
+       buttons: {
+           loggedOut: [
+               {
+                    name: 'Register',
+                    path: '/auth/register'
+               },
+               {
+                    name: 'Login',
+                    path: '/auth/login'
+               }
+           ],
+           loggedIn: [
+              {
+                  name: 'Profile',
+                  path: '/auth/profile'
+              },
+              {
+                  name: 'My polls',
+                  path: '/settings/polls'
+              }
+           ]
        }
+       
    }
 };
 

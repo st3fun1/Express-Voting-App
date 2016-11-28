@@ -13,7 +13,6 @@ var route = function (dbAddress,config) {
             partial: config.partials.register, 
             title: config.pageSettings.register.title,
             h2: config.pageSettings.register.h2,
-            nav: config.pageSettings.nav,
             isLoggedIn: req.session.userLogged
         });
     });
@@ -53,7 +52,6 @@ var route = function (dbAddress,config) {
             partial: config.partials.login, 
             title: config.pageSettings.login.title,
             h2: config.pageSettings.login.h2,
-            nav: config.pageSettings.nav,
             isLoggedIn: req.session.userLogged
         });
     });
@@ -74,7 +72,6 @@ var route = function (dbAddress,config) {
                 partial: config.partials.profile, 
                 title: config.pageSettings.profile.title,
                 h2: config.pageSettings.profile.h2,
-                nav: config.pageSettings.nav,
                 isLoggedIn: req.session.userLogged,
                 username: req.user.username
             });

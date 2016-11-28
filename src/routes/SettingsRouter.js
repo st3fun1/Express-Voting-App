@@ -23,9 +23,8 @@ var route = function (dbAddress,config) {
             partial: config.partials.accountSettings, 
             title: config.pageSettings.accountSettings.title,
             h2: config.pageSettings.accountSettings.h2,
-            nav: config.pageSettings.nav,
-            isLoggedIn: req.session.userLogged,
-            username: req.user.username
+            username: req.user.username,
+            path: req.path
         });
     });
     
@@ -58,8 +57,6 @@ var route = function (dbAddress,config) {
                     partial: config.partials.pollsSettings, 
                     title: config.pageSettings.pollsSettings.title,
                     h2: config.pageSettings.pollsSettings.h2,
-                    nav: config.pageSettings.nav,
-                    isLoggedIn: req.session.userLogged,
                     polls: docs
               });
            });
@@ -72,42 +69,53 @@ var route = function (dbAddress,config) {
         var jsonReq = req.query.json;
         //condition for checking if the poll is in db
          //else redirect home
-        mongodb.connect(dbAddress,function(err,db){
-           if(err) throw err;
-           var collection = db.collection('polls');
-           collection.findOne({'user.username':username,_id:ObjectID(pollID)},function(err,poll){
-                  console.log(poll);
-                  if(err) throw err;
-                  if(jsonReq == '1'){
-                    return res.json({poll: poll})
-                  }
-                  return res.render('index',{
-                        partial: config.partials.editPoll, 
-                        title: config.pageSettings.pollsSettings.title,
-                        h2: config.pageSettings.pollsSettings.h2,
-                        nav: config.pageSettings.nav,
-                        isLoggedIn: req.session.userLogged,
-                        pollTitle: decodeURIComponent(poll.title),
-                        pollID: poll._id,
-                        scripts: config.pageSettings.editPoll.scripts,
-                }); 
+        console.log(ObjectID.isValid(pollID));
+        console.log(ObjectID.isValid('231312'));
+        if(ObjectID.isValid(pollID) && username == req.user.username){
+            mongodb.connect(dbAddress,function(err,db){
+            if(err) throw err;
+            var collection = db.collection('polls');
+                collection.findOne({'user.username':username,_id:ObjectID(pollID)},function(err,poll){
+                      console.log(poll);
+                      if(err) return res.redirect('back');
+                      else return res.render('index',{
+                            partial: config.partials.editPoll, 
+                            title: config.pageSettings.pollsSettings.title,
+                            h2: config.pageSettings.pollsSettings.h2,
+                            pollTitle: decodeURIComponent(poll.title),
+                            pollID: poll._id,
+                            scripts: config.pageSettings.editPoll.scripts,
+                        }); 
+                      if(jsonReq == '1'){
+                        return res.json({poll: poll})
+                      }
+               });
            });
-        });
+            
+        } else {
+            return res.redirect('/');
+        }
+       
     });
     
     SettingsRouter.route('/polls/:id/delete').post(function (req,res) {
         var pollID = req.params.id;
         console.log('pollID: ', pollID, typeof pollID);
-        mongodb.connect(dbAddress,function(err,db){
-           if(err) throw err;
-           var collection = db.collection('polls');
-           collection.remove({_id: ObjectID(pollID)},function(err,result){
-               if(err) throw err;
-               if(result){
-                   return res.redirect('/polls');
-               }  
-           })
-        }); 
+        if(mongodb.BSONPure.ObjectID.isValid(pollID)){
+           mongodb.connect(dbAddress,function(err,db){
+               if(err) res.redirect('back');
+               var collection = db.collection('polls');
+                   collection.remove({_id: ObjectID(pollID)},function(err,result){
+                       if(err) throw err;
+                       if(result){
+                           return res.redirect('/polls');
+                       }  
+                   })
+           }); 
+        }else{
+            res.redirect('back');                                    
+        }
+      
     });
     /* To add global nav */
     return SettingsRouter;

@@ -10,12 +10,29 @@
             <% } else { %>
                 <h2><%= h2 %></h2>
             <% } %>
-            <a href="/register">
-                <button class="btn btn-default btn-success btn-lg btn-custom"> Register </button>
-            </a>
+            <% 
+                var btns;
+                if(isLoggedIn == undefined){
+                    btns = buttons.loggedOut;
+                } else {
+                    btns = buttons.loggedIn;
+                }
+            %>
+            <% btns.forEach(function(btn,i){ 
+                let className;
+                if(i == 0) className = 'btn-success';
+                else className = 'btn-primary';
+            %>
+                <a href="<%= btn.path %>">
+                    <button class="btn <%= className %> btn-lg btn-custom"><%= btn.name %></button>
+                </a>
+            
+            <% }) %>
+<!--
             <a href="/view-polls">
                 <button class="btn btn-default btn-danger btn-lg btn-custom"> Vote now </button>
             </a>
+-->
         </div>
     </div>
 </div>

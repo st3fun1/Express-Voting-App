@@ -14,8 +14,6 @@ var route = function (dbAddress,config) {
                     partial: config.partials.polls, 
                     title: config.pageSettings.polls.title,
                     h2: config.pageSettings.polls.h2,
-                    nav: config.pageSettings.nav,
-                    isLoggedIn: req.session.userLogged,
                     polls: results
                 });
             });
@@ -39,8 +37,6 @@ var route = function (dbAddress,config) {
                         partial: config.partials.singlePoll, 
                         title: config.pageSettings.singlePoll.title,
                         h2: config.pageSettings.singlePoll.h2,
-                        nav: config.pageSettings.nav,
-                        isLoggedIn: req.session.userLogged,
                         options: result.options
                         ,pollTitle: decodeURIComponent(result.title)
                         ,pollOwner: pollOwner
