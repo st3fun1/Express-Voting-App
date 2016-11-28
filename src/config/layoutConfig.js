@@ -43,8 +43,30 @@ var config = {
        singlePoll:{
            title: 'Vote now',
            h2: 'Vote now and pick how you want to see the data',
-           scripts:[{path:'https://www.gstatic.com/charts/loader.js'},
-                             {path: '/scripts/charts.js'}]
+           scripts:[
+               {
+                    path:'https://www.gstatic.com/charts/loader.js'
+                },
+                {
+                    path: '/scripts/charts.js'
+                },
+                {
+                    path: '/scripts/votingPage-chart.js'
+                }
+                ]
+       },
+       editPoll: {
+           scripts:[
+               {
+                    path:'https://www.gstatic.com/charts/loader.js'
+                },
+                {
+                    path: '/scripts/charts.js'
+                },
+                {
+                    path: '/scripts/userPage-chart.js'
+                }
+                ]
        },
        nav: {
            loggedOut:{links:[

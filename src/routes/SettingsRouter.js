@@ -66,26 +66,29 @@ var route = function (dbAddress,config) {
         });
     });
     
-     SettingsRouter.route('/polls/poll/:id').get(function (req, res) {
+     SettingsRouter.route('/polls/poll?').get(function (req, res) {
+        var username = req.query.username;
+        var pollID = req.query.pollID;
+        var jsonReq = req.query.json;
         console.log(req.params.title);
         mongodb.connect(dbAddress,function(err,db){
            if(err) throw err;
            var collection = db.collection('polls');
-           collection.findOne({_id:  new ObjectID(req.params.id)},function(err,poll){
-              console.log(poll);
-              if(err) throw err;
-              if(res){
-                res.render('index',{
-                    partial: config.partials.editPoll, 
-                    title: config.pageSettings.pollsSettings.title,
-                    h2: config.pageSettings.pollsSettings.h2,
-                    nav: config.pageSettings.nav,
-                    isLoggedIn: req.session.userLogged,
-                    scripts: config.pageSettings.singlePoll.scripts
-                });
-               
-              }
-           
+           collection.findOne({'user.username':username,_id:ObjectID(pollID)},function(err,poll){
+                  console.log(poll);
+                  if(err) throw err;
+                  if(jsonReq == '1'){
+                    return res.json({poll: poll})
+                  }
+                  return res.render('index',{
+                        partial: config.partials.editPoll, 
+                        title: config.pageSettings.pollsSettings.title,
+                        h2: config.pageSettings.pollsSettings.h2,
+                        nav: config.pageSettings.nav,
+                        isLoggedIn: req.session.userLogged,
+                        pollTitle: decodeURIComponent(poll.title),
+                        scripts: config.pageSettings.editPoll.scripts,
+                    }); 
            });
         });
     });
@@ -94,11 +97,11 @@ var route = function (dbAddress,config) {
 
     
     
-    SettingsRouter.route('/deletePolls/').post(function (req,res) {
+    SettingsRouter.route('/deletePolls').post(function (req,res) {
         
     });
     
-    SettingsRouter.route('/addOption/').post(function (req,res) {
+    SettingsRouter.route('/addOption').post(function (req,res) {
         
     });  
     return SettingsRouter;

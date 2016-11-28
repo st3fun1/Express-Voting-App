@@ -10,7 +10,7 @@
         <ul class="poll-list">
             <% polls.forEach(function(poll){ %>
                 <li class="poll-list-item">
-                    <a href="polls/poll/<%= poll._id %>">
+                    <a href="polls/poll?username=<%= poll.user.username %>&pollID=<%= poll._id %>">
                         <span class="text"><%= decodeURIComponent(poll.title) %>
                         </span>
                     </a>

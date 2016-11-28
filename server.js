@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var app = express();
-var serverPort = 8080 || process.env.PORT;
+var serverPort = 3000 || process.env.PORT;
 var dbAddress = 'mongodb://localhost:27017/voting-app'; 
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');

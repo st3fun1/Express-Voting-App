@@ -1,7 +1,8 @@
 <div class="row text-center">
     <div class="col-md-4">
         <h1><%= pollTitle %></h1>
-        <h2>By <%=  pollOwner.toUpperCase(); %></h2> </div>
+        <h2>By <%=  pollOwner.toUpperCase(); %></h2>
+    </div>
     <div class="col-md-4">
         <form id="vote" action="/polls/vote/<%= pollOwner %>/<%= encodeURIComponent(pollTitle) %>" method="post" class="text-left">
             <% options.forEach(function(option,index){ %>
@@ -17,11 +18,11 @@
                     </label>
                 </div>
                 <% }); %>
-                <button type="submit" class="btn btn-default btn-success form-btn col-xs-12">Vote</button>
+                <input type="submit" class="btn btn-default btn-success form-btn col-xs-12" value="Vote">
         </form>
     </div>
-    <div class="col-md-4">
-        <p>Pie chart</p>
+    
+    <div class="col-md-4" style='margin-top:60px'>
         <div id="chart_div"></div>
     </div>
 </div>

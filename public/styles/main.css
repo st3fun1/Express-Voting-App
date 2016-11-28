@@ -4,13 +4,20 @@
 
 html {
     font-size: 16px;
-    height:100%;
 }
 
+html, body {
+    height: 100%;
+}
 body {
     font-size: 100%;
-    height:100%;
-    padding-bottom:3.125em;
+}
+
+.main-wrapper {
+    min-height: 100%;
+    height: 100%;
+    margin: 0 auto -125px;
+    height: auto ! important;
 }
 
 /* NAVIGATION */
@@ -70,9 +77,6 @@ span.about-icons i {
 }
 
 /* MAIN CONTENT */
-main {
-    margin-bottom: 0;
-}
 .main-content{
     padding: 3.125em;
     min-height: 30em;
@@ -133,9 +137,11 @@ ul.poll-list > li > span{
 /* FOOTER */
 
 footer {
-    background: cornflowerblue;
+    background:
+    cornflowerblue;
     color:white;
     padding:25px 0;
+    height:75;
     font-size:14px;
 }
 

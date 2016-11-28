@@ -1,24 +1,27 @@
 <!-- TO DO refactor pages into 1; include main partial based on route; + objects for other partials-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <%- include('../partials/head.ejs', {title: title}); %>
+    <%- include('../partials/head.ejs', {title: title}); %>
 </head>
 
 <body>
-   <%- include('../partials/nav.ejs',{nav: nav}); %>
-    <header>
-      <%- include('../partials/header.ejs',{h2: h2}); %>
-    </header>
-    <main>
-        <div class="container-fluid main-content">
-            <%- include(partial,{}); %>
-        </div>
-    </main>
-    <footer>
-        <%- include('../partials/footer.ejs',{date: new Date().getFullYear()}); %>
-    </footer>
-  <%- include('../partials/scripts.ejs',{});%> 
-
+    <div class="main-wrapper">
+        <%- include('../partials/nav.ejs',{nav: nav}); %>
+            <header>
+                <%- include('../partials/header.ejs',{h2: h2}); %>
+            </header>
+            <main>
+                <div class="container-fluid main-content">
+                    <%- include(partial,{}); %>
+                </div>
+            </main>
+            <footer>
+                <%- include('../partials/footer.ejs',{date: new Date().getFullYear()}); %>
+            </footer>
+    </div>
+    <%- include('../partials/scripts.ejs',{});%>
 </body>
+
 </html>
