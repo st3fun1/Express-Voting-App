@@ -70,7 +70,8 @@ var route = function (dbAddress,config) {
         var username = req.query.username;
         var pollID = req.query.pollID;
         var jsonReq = req.query.json;
-        console.log(req.params.title);
+        //condition for checking if the poll is in db
+         //else redirect home
         mongodb.connect(dbAddress,function(err,db){
            if(err) throw err;
            var collection = db.collection('polls');
@@ -87,23 +88,28 @@ var route = function (dbAddress,config) {
                         nav: config.pageSettings.nav,
                         isLoggedIn: req.session.userLogged,
                         pollTitle: decodeURIComponent(poll.title),
+                        pollID: poll._id,
                         scripts: config.pageSettings.editPoll.scripts,
-                    }); 
+                }); 
            });
         });
     });
     
-    /* To add global nav */
-
-    
-    
-    SettingsRouter.route('/deletePolls').post(function (req,res) {
-        
+    SettingsRouter.route('/polls/:id/delete').post(function (req,res) {
+        var pollID = req.params.id;
+        console.log('pollID: ', pollID, typeof pollID);
+        mongodb.connect(dbAddress,function(err,db){
+           if(err) throw err;
+           var collection = db.collection('polls');
+           collection.remove({_id: ObjectID(pollID)},function(err,result){
+               if(err) throw err;
+               if(result){
+                   return res.redirect('/polls');
+               }  
+           })
+        }); 
     });
-    
-    SettingsRouter.route('/addOption').post(function (req,res) {
-        
-    });  
+    /* To add global nav */
     return SettingsRouter;
 }
 module.exports = route;

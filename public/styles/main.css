@@ -134,6 +134,17 @@ ul.poll-list > li > span{
     
 }
 
+/* MESSAGES */
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+    color:green;
+}
+
 /* FOOTER */
 
 footer {
