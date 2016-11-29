@@ -14,16 +14,17 @@ var Chart = (function(){
             data.addRows(dataArr);
             // Set chart options
             var options = {
-                  'width': '10em'
-                , 'height': '10em'
+                  'width': '100%'
+                , 'height': '100%'
                 , is3D: true
                 , legend: {
                     alignment: 'center',
-                    position: 'right'
-                }
+                    position: 'bottom',
+                },
+                fontSize: '14'
             };
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart-div'));
             chart.draw(data, options);
         };
     }

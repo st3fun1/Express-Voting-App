@@ -136,13 +136,20 @@ ul.poll-list > li > span{
 
 /* MESSAGES */
 
-.hidden {
+.message {
     visibility: hidden;
+    height:3em;
+    color: green;
 }
 
-.visible {
-    visibility: visible;
-    color:green;
+/* CHART */
+
+#chart-div {
+    font-size:1.1em;
+    position: relative;
+    margin: 1.5em auto 0;
+    border: 0.125em solid darkgrey;
+    border-radius: 0.325em;
 }
 
 /* FOOTER */

@@ -7,7 +7,7 @@ var route = function (dbAddress,config) {
     
     var renderContentMiddleware = function(req,res,next){
         var viewObj;
-        console.log('REQ: ',  req.path);
+//        console.log('REQ: ',  req.path);
         if(req.path == '/'){
             res.locals.viewData = {
                     partial: config.partials.polls, 
@@ -27,7 +27,7 @@ var route = function (dbAddress,config) {
     PollRouter.use(renderContentMiddleware);
     
     PollRouter.route('/').get(function (req, res) {
-        console.log(req.app.get('viewObj'));
+//        console.log(req.app.get('viewObj'));
         var polls;
         mongodb.connect(dbAddress, function (err, db) {
             var pollsCollection = db.collection('polls');

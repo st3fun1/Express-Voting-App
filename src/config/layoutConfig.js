@@ -115,6 +115,10 @@ var config = {
                {
                     name: 'Login',
                     path: '/auth/login'
+               },
+               {
+                   name: 'Facebook Login',
+                   path: '/auth/facebook'
                }
            ],
            loggedIn: [

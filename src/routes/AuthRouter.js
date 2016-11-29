@@ -9,7 +9,7 @@ var route = function (dbAddress, config) {
     
     var renderContentMiddleware = function (req, res, next) {
         
-        console.log('REQ path AUTH: ', req.path);
+//        console.log('REQ path AUTH: ', req.path);
         if (req.path == '/register') {
             res.locals.viewData = {
                 partial: config.partials.register
@@ -34,15 +34,6 @@ var route = function (dbAddress, config) {
         next();
     };
     
-    var checkIfLogged = function (req, res, next){
-        if(req.user){
-            req.session.userLogged = 1;
-        }
-        
-        next();
-    };
-    
-    AuthRouter.use(checkIfLogged);
     
     AuthRouter.use(renderContentMiddleware);
     
@@ -97,6 +88,16 @@ var route = function (dbAddress, config) {
         , failureRedirect: 'back'
         , failureFlash: true
     }));
+    
+    AuthRouter.route('/facebook').get(passport.authenticate('facebook',{
+       scope: 'email' 
+    }));
+    
+    AuthRouter.route('/facebook/callback').get(passport.authenticate('facebook',{
+       failureRedirect: 'back'
+    }),function(req,res){
+        res.redirect('/profile');
+    });
     
     AuthRouter.route('/profile').get(function (req, res) {
         if (!req.user) {

@@ -13,7 +13,6 @@ var route = function (dbAddress,config) {
     };
     
     var renderContentMiddleware = function (req, res, next) {
-        console.log('REQ: ', req.path);
         if(req.path == '/account'){
             res.locals.viewData = {
                 partial: config.partials.accountSettings, 
@@ -90,17 +89,18 @@ var route = function (dbAddress,config) {
             mongodb.connect(dbAddress,function(err,db){
             if(err) throw err;
             var collection = db.collection('polls');
-                collection.findOne({'user.username':username,_id:ObjectID(pollID)},function(err,poll){
-                      console.log(poll);
+            collection.findOne({'user.username':username,_id:ObjectID(pollID)},function(err,poll){
+                      /*console.log(poll);*/
                        if(err) return res.redirect('back');
                        if(jsonReq == 1){
-                        console.log('json chart request');
+                        /*console.log('json chart request');*/
                         return res.json({poll: poll})
                       }
                       
                       else return res.render('index',{
                             pollTitle: decodeURIComponent(poll.title),
                             pollID: poll._id,
+                            pollOptions: poll.options
                       });
                });
            });
@@ -113,13 +113,13 @@ var route = function (dbAddress,config) {
     
     SettingsRouter.route('/polls/:id/delete').post(function (req,res) {
         var pollID = req.params.id;
-        console.log('pollID: ', pollID, typeof pollID);
+      /*  console.log('pollID: ', pollID, typeof pollID);*/
         if(pollID.match(/^[a-fA-F0-9]{24}$/)){
            mongodb.connect(dbAddress,function(err,db){
                if(err) res.redirect('back');
                var collection = db.collection('polls');
                    collection.remove({_id: ObjectID(pollID)},function(err,result){
-                       if(err) throw err;
+                       if(err) return res.redirect('back');
                        if(result){
                            return res.redirect('/polls');
                        }  
@@ -130,6 +130,39 @@ var route = function (dbAddress,config) {
         }
       
     });
+    
+    SettingsRouter.route('/polls/:id/update').post(function (req,res) {
+        console.log(req.body);
+        var pollID = req.params.id;
+        if(pollID.match(/^[a-fA-F0-9]{24}$/)){
+            
+            var optionsArr = [];
+            for(var option in req.body){
+                    optionsArr.push({
+                    name: req.body[option],
+                    votes: 0
+                   }); 
+            }
+            
+            mongodb.connect(dbAddress, function(err, db){
+               if(err) return res.redirect('/');
+               var collection = db.collection('polls');
+               collection.updateOne({
+                   _id:  ObjectID(pollID)
+               },{
+                   $addToSet:{
+                           options:  {
+                               $each : optionsArr
+                           }
+                   }
+               }, function(err,result){
+                   if(err) return res.json({message:'Update failed!'});
+                    res.json({message: 'Update succesful!'});
+               });
+            });
+        }
+    });
+    
     /* To add global nav */
     return SettingsRouter;
 }
