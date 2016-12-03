@@ -31,9 +31,12 @@ exports.showUserSPolls = function (req, res) {
     
        Poll.find({'user.id' : req.user._id}).exec(function(err,docs){
           if(err) throw err;
-           return res.render('index',{
-                polls: docs
-          });
+          console.log('docs',docs);
+          if(docs.length > 0) {
+            res.render( 'index', {polls: docs});
+          } else {
+            res.render( 'index', {message: 'You have no polls yet'})
+          }
        });
 };
 
@@ -93,22 +96,18 @@ exports.updatePoll = function (req,res) {
             optionsArr.push({name: req.body[option],votes: 0}); 
             
         }
-
-        mongodb.connect(dbAddress, function(err, db){
-           if(err) return res.redirect('/');
-           var collection = db.collection('polls');
-           collection.updateOne({
-               _id:  ObjectID(pollID)
-           },{
-               $addToSet:{
-                       options:  {
-                           $each : optionsArr
-                       }
-               }
-           }, function(err,result){
-               if(err) return res.json({message:'Update failed!'});
-                res.json({message: 'Update succesful!'});
-           });
-        });
+           Poll.update({_id:  ObjectID(pollID)},
+                          {
+                           $addToSet:{
+                                   options:  {
+                                       $each : optionsArr
+                                   }
+                                           }
+                           }, function(err,result){
+                               if(err) return res.json({message:'Update failed!'});
+                                res.json({message: 'Update succesful!'});
+                           });
+    } else {
+        return res.redirect('/');
     }
 };

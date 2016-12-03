@@ -32,6 +32,7 @@ exports.showOne = function (req, res) {
 
 exports.vote = function (req, res) {
         var pollOwner = req.params.username;
+        console.log(req.body);
         var pollTitle = encodeURIComponent(req.params.pollTitle);
         var pollOption = req.body.option;
         Poll.findOneAndUpdate({title: pollTitle,'user.username': pollOwner,'options.name': pollOption},
@@ -40,7 +41,10 @@ exports.vote = function (req, res) {
                     'options.$.votes': 1
                 }
             },
+            { 'new': true }
+            ,
             function (err,result) {
+                console.log(result);
                 if (result) {
                         var responseObj = {
                             message: 'Update completed succesfully!',
@@ -50,8 +54,7 @@ exports.vote = function (req, res) {
                             }
                         };
                             return res.json(responseObj);
-                }
-                else {
+                } else {
                         return res.json({'message':'Failed to update data!'});
                 }
             });

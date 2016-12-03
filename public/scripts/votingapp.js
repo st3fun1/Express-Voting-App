@@ -4,6 +4,7 @@ $(function(){
     
     //user profile page- action = add new option to poll
     $('.add-poll-btn').click(function(e){
+          var optionsCount = $('#add-poll input').length;
           e.preventDefault();
           optionsCount++;
           var option = `<div class="form-group">

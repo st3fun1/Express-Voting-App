@@ -28,6 +28,7 @@ var Chart = (function(){
             chart.draw(data, options);
         };
     }
+    
     chartObj.showPieChart = function (url,type,form,data) {
         var completeReqObj;
         var reqObj = {
@@ -44,12 +45,14 @@ var Chart = (function(){
             completeReqObj = Object.assign(reqObj,{
                   data:data
               });
+            console.log(data);
         } else {
             completeReqObj = reqObj;
         }
         $.ajax(completeReqObj).done(function (data) {
-            console.log(data);
+           
             var dataArr = data.poll.options.map((x) => [x.name, x.votes]);
+            console.log(dataArr);
             google.charts.setOnLoadCallback(addDataToChart(dataArr, decodeURIComponent(data.poll.title)));
         }).fail(function () {
             console.log(new Error('failed'));
