@@ -13,6 +13,7 @@ var config = require('./src/config/layoutConfig');
 var AuthRouter = require('./src/routes/AuthRouter')(dbAddress,config);
 var PollRouter = require('./src/routes/PollRouter')(dbAddress,config);
 var SettingsRouter = require('./src/routes/SettingsRouter')(dbAddress,config);
+var HomePageRouter = require('./src/routes/HomePage.Router')();
 /* to do redirect middleware when not logged in for settings, profile etc */
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -45,17 +46,7 @@ var checkIfLogged = function (req, res, next){
 };
 
 app.use(checkIfLogged);
-app.get('/',function(req,res){
-    console.log(req.session.userLogged)
-    res.render('index',{
-        viewData: {
-        partial: config.partials.mainPage, 
-        title: config.pageSettings.main.title,
-        h2: config.pageSettings.main.h2,
-        }
-    });
-    });
-
+app.use('/',HomePageRouter);
 app.use('/auth',AuthRouter);
 app.use('/polls',PollRouter);
 app.use('/settings',SettingsRouter);

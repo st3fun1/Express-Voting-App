@@ -3,6 +3,7 @@ var app = express();
 var mongodb = require('mongodb').MongoClient;
 var PollRouter = express.Router();
 var ObjectId = require('mongodb').ObjectID;
+var PollController = require('../controllers/Poll.Controller');
 var route = function (dbAddress,config) {
     
     var renderContentMiddleware = function(req,res,next){
@@ -26,108 +27,12 @@ var route = function (dbAddress,config) {
     };
     PollRouter.use(renderContentMiddleware);
     
-    PollRouter.route('/').get(function (req, res) {
-//        console.log(req.app.get('viewObj'));
-        var polls;
-        mongodb.connect(dbAddress, function (err, db) {
-            var pollsCollection = db.collection('polls');
-            pollsCollection.find({}).toArray(function (err, results) {
-                /*console.log(results);*/
-                res.render('index',{
-                    results: results
-                });
-            });
-        });
-    });
-    PollRouter.route('/poll?').get(function (req, res) {
-        var pollOwner = req.query.username;
-        var pollTitle = encodeURIComponent(req.query.pollTitle);
-        mongodb.connect(dbAddress, function (err, db) {
-            var pollsCollection = db.collection('polls');
-            pollsCollection.findOne({
-                  title: pollTitle
-                , 'user.username': pollOwner
-            }, function (err, result) {
-                if (result) {
-                    //pass data into single-poll partial
-                    //                   req.session.status = {
-                    //                       statusCode: 200
-                    //                };
-                    res.render('index',{
-                        options: result.options
-                        ,pollTitle: decodeURIComponent(result.title)
-                        ,pollOwner: pollOwner
-                    });
-                }
-                else {
-                    res.redirect('back');
-                }
-            });
-        });
-    });
+    PollRouter.route('/').get(PollController.showAll);
+    PollRouter.route('/poll?').get(PollController.showOne);
     /* Increment votes for a single poll */
-    PollRouter.route('/vote/:username/:pollTitle').post(function (req, res) {
-        var pollOwner = req.params.username;
-        var pollTitle = encodeURIComponent(req.params.pollTitle);
-        var pollOption = req.body.option;
-//        console.log(pollOwner, pollTitle, pollOption);
-        mongodb.connect(dbAddress, function (err, db) {
-            var pollsCollection = db.collection('polls');
-            pollsCollection.findAndModify(
-            {
-                title: pollTitle
-                ,'user.username': pollOwner,
-                'options.name': pollOption,
-            },
-             [['id','asc']],
-            {
-                $inc: {
-                    'options.$.votes': 1
-                }
-            },
-            { new: true},
-            function (err,result) {
-           /*     console.log(result);*/
-                if (result) {
-                    //pass data into single-poll partial
-                 /*   res.redirect('/polls');*/
-                        var responseObj = {
-                            message: 'Update completed succesfully!',
-                            poll: result.value
-                        };
-                            res.json(responseObj);
-                }
-                else {
-                        res.json({'message':'Failed to update data!'});
-                }
-            });
-        });
-    });
-    PollRouter.route('/getPoll?').get(function (req, res) {
-//        console.log(req.query);
-        var pollOwner = req.query.username;
-        var pollTitle = req.query.pollTitle
-//        console.log(pollOwner, pollTitle, pollOption);
-        mongodb.connect(dbAddress, function (err, db) {
-            var pollsCollection = db.collection('polls');
-            pollsCollection.findOne(
-            {
-                title: pollTitle
-                ,'user.username': pollOwner,
-            },
-            function (err,result) {
-                if(result){
-                    var responseObj = {
-                            message: 'Update completed succesfully!',
-                            poll: result
-                    };
-                    res.json(responseObj);
-                }else{
-                    res.json({'message':'Failed to update data!'});
-                }
-            });
-        });
-    });
+    PollRouter.route('/vote/:username/:pollTitle').post(PollController.vote);
+    PollRouter.route('/getPoll?').get(PollController.getPollAPI);
+    
     return PollRouter;
 };
 module.exports = route;

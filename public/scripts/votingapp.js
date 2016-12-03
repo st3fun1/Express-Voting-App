@@ -74,7 +74,10 @@ $(function(){
                    console.log('fail')
                }
            }).done(function(data){
-               $('.message').html(data.message).css({'visibility':'visible'});
+               $('.message').html(data.message + ' Page will refresh in 3s!').css({'visibility':'visible'});
+               setTimeout(function(){
+                   window.location.reload();
+               },3000);
            });
     })
     

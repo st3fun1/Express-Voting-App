@@ -48,6 +48,7 @@ var Chart = (function(){
             completeReqObj = reqObj;
         }
         $.ajax(completeReqObj).done(function (data) {
+            console.log(data);
             var dataArr = data.poll.options.map((x) => [x.name, x.votes]);
             google.charts.setOnLoadCallback(addDataToChart(dataArr, decodeURIComponent(data.poll.title)));
         }).fail(function () {
