@@ -69,9 +69,27 @@ exports.profile = function (req, res) {
         return res.redirect('/');
     }
     else {
-        res.render('index', {
-            username: req.user.username
+        console.log(req.user);
+        Poll.count({
+            'user.username': req.user.username
+        },function(err,result){
+            var numOfPolls = result;
+            Poll.aggregate([{
+                $match: {
+                'user.username':req.user.username
+                }
+            },{
+                $group: {
+                    total: {$sum: "$options.votes"}
+                }
+            }],function(err,result){
+                console.log(result);
+                res.render('index', {
+                    username: req.user.username
+                });
+            })
         });
+        
     }
 };
 
