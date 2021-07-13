@@ -3,7 +3,7 @@ require("dotenv").config();
 var express = require("express");
 var path = require("path");
 var app = express();
-var serverPort = 3000 || process.env.PORT;
+var serverPort = process.env.PORT || 3000;
 var dbAddress = process.env.MONGO_ADDRESS;
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
